@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const cheerio = require('cheerio');
 
 const TelegramBot = require('node-telegram-bot-api');
@@ -8,7 +10,7 @@ const config = require('config/config');
 const token = config.TELEGRAM_BOT_TOKEN;
 
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token);
 
 const request = require('request');
 
@@ -38,11 +40,11 @@ const sendWeekly = async (host) => {
   await(bot.sendMessage(config.TELEGRAM_CHAT_ID, 'Node weekly ' + url));
 };
 
-new CronJob('0 02 11 * * *', async () => {
+new CronJob(process.env.CRON_TIME, async () => {
     await(sendWeekly('https://nodeweekly.com/'));
     await(sendWeekly('https://javascriptweekly.com/'));
   },
   null,
   true, /* Start the job right now */
-  'Europe/Kiev'/* Time zone of this job. */
+  process.env.CRON_TIMEZONE/* Time zone of this job. */
 );
