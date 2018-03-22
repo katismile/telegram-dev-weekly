@@ -46,3 +46,18 @@ new CronJob(process.env.CRON_TIME, async () => {
   true, /* Start the job right now */
   process.env.CRON_TIMEZONE/* Time zone of this job. */
 );
+
+const express = require('express');
+const app = express();
+
+const port = process.env.PORT || 8080;
+
+app.get('/', function(req, res) {
+
+  // ejs render automatically looks in the views folder
+  res.render('index');
+});
+
+app.listen(port, function() {
+  console.log('Our app is running on http://localhost:' + port);
+});
