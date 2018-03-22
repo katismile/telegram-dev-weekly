@@ -2,10 +2,8 @@ const cheerio = require('cheerio');
 
 const TelegramBot = require('node-telegram-bot-api');
 
-const config = require('config/config');
-
 // replace the value below with the Telegram token you receive from @BotFather
-const token = config.TELEGRAM_BOT_TOKEN;
+const token = process.env.TELEGRAM_BOT_TOKEN;
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
@@ -35,7 +33,7 @@ const sendWeekly = async (host) => {
 
   const url = `${host}${href}`;
 
-  await(bot.sendMessage(config.TELEGRAM_CHAT_ID, 'Node weekly ' + url));
+  await(bot.sendMessage(process.env.TELEGRAM_CHAT_ID, 'Node weekly ' + url));
 };
 
 new CronJob('0 02 11 * * *', async () => {
